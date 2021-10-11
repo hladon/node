@@ -1,16 +1,16 @@
 import csv from 'csvtojson';
-import { createWriteStream } from 'fs';
-const csvFilePath='csv\\nodejs-hw1-ex1.csv';
+import { createWriteStream,createReadStream } from 'fs';
+const readStream=createReadStream('csv\\nodejs-hw1-ex1.csv');
 
-let stream=createWriteStream('test.txt');
+const stream=createWriteStream('test.txt');
 csv()
-.fromFile(csvFilePath)
-.subscribe((json,lineNumber)=>{
+.fromStream(readStream)
+.subscribe((json)=>{
                 let outputLine={};
-                for(let key in json){
-                        outputLine[firstLettertoLower(key)]=json[key]
+                for(const[key,value] of Object.entries(json)){
+                        outputLine[firstLettertoLower(key)]=value;
                 }
-                stream.write(JSON.stringify(outputLine)+'\n');
+                stream.write(`${JSON.stringify(outputLine)}\n`);
         }
         ,(err)=>{console.log(err)}
         ,()=>{console.log('Job Done!')})

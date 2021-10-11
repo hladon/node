@@ -7,7 +7,7 @@ const rl=createInterface({
 })
 
 const func=rl.on('line',(input)=>{
-        let output = input.split("").reverse().join("");
+        const output = input.split("").reverse().join("");
         console.log(output);
 })
 
