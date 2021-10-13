@@ -6,8 +6,8 @@ const rl=createInterface({
         terminal:false
 })
 
-let func=rl.on('line',(input)=>{
-        let output = input.split("").reverse().join("");
+const func=rl.on('line',(input)=>{
+        const output = input.split("").reverse().join("");
         console.log(output);
 })
 

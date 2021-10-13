@@ -1,21 +1,19 @@
 import csv from 'csvtojson';
-import { writeFile } from 'fs';
-const csvFilePath='csv\\nodejs-hw1-ex1.csv';
+import { createWriteStream,createReadStream } from 'fs';
+const readStream=createReadStream('csv\\nodejs-hw1-ex1.csv');
 
-var data='';
+const stream=createWriteStream('test.txt');
 csv()
-.fromFile(csvFilePath)
-.on('error',(err)=>{
-	console.log(err)
-})
-.then((jsonObj)=>{
-	jsonObj.forEach((line)=>{
-                data+=JSON.stringify(line)+'\n';
-        })
+.fromStream(readStream)
+.subscribe((json)=>{
+                let outputLine=Object.entries(json).reduce((acc,[key,value])=>({
+                        ...acc,[key.toLocaleLowerCase()]:value
+                }),{});
+                stream.write(`${JSON.stringify(outputLine)}\n`);
+        }
+        ,(err)=>{console.log(err)}
+        ,()=>{console.log('Job Done!')})
 
-	writeFile('test.txt',data,(err)=>{
-                if(err)
-                        console.log(err);
-
-        })
-})
+function firstLettertoLower(word) {
+        return word.charAt(0).toLowerCase()+word.slice(1);
+}
