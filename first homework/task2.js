@@ -6,10 +6,9 @@ const stream=createWriteStream('test.txt');
 csv()
 .fromStream(readStream)
 .subscribe((json)=>{
-                let outputLine={};
-                for(const[key,value] of Object.entries(json)){
-                        outputLine[firstLettertoLower(key)]=value;
-                }
+                let outputLine=Object.entries(json).reduce((acc,[key,value])=>({
+                        ...acc,[key.toLocaleLowerCase()]:value
+                }),{});
                 stream.write(`${JSON.stringify(outputLine)}\n`);
         }
         ,(err)=>{console.log(err)}
